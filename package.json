@@ -2,11 +2,7 @@
   "name": "unique-shortener",
   "description": "A redis-backed URL-shortener which only generates 1 short-url per url",
   "version": "0.1.0",
-  "author": {
-    "name": "Valiton GmbH",
-    "email": "bigdata@valiton.com",
-    "url": "http://www.valiton.com"
-  },
+  "author": "Valiton GmbH <bigdata@valiton.com> (http://www.valiton.com)",
   "repository": {
     "type": "git",
     "url": "git@github.com:valiton/node-unique-shortener.git"
@@ -39,5 +35,10 @@
   ],
   "scripts": {
     "test": "grunt prod"
-  }
+  },
+  "directories": {
+    "doc": "doc",
+    "example": "examples"
+  },
+  "license": "BSD-2-Clause"
 }
