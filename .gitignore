@@ -1,0 +1,8 @@
+.DS_Store
+.bundle
+.project
+.idea
+.lock
+node_modules
+npm-debug.log
+log

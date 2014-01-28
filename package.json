@@ -32,7 +32,8 @@
     "jasmine-matchers": "~0.2.2",
     "grunt-replace": "~0.5.1",
     "grunt-istanbul": "~0.2.3",
-    "async": "0.2.10"
+    "async": "0.2.10",
+    "redis": "0.10.0"
   },
   "keywords": [
     "vInsight"

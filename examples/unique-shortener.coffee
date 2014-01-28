@@ -10,10 +10,10 @@ config =
 
 shortener = new UniqueShortener config
 primdb = redis.createClient()
-primdb.select(5)
+primdb.select(0)
 
 secdb = redis.createClient()
-secdb.select(6)
+secdb.select(1)
 
 shortener.init primdb, secdb
 
