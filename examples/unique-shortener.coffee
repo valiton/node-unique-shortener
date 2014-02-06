@@ -2,6 +2,7 @@
 # $ coffee examples/unique-shortener.coffee
 
 redis             = require 'redis'
+MongoClient       = require('mongodb').MongoClient
 UniqueShortener   = require "#{process.cwd()}/lib/unique-shortener"
 
 config =
@@ -9,15 +10,11 @@ config =
   counterKey: 'unique-shortener-counter'
 
 shortener = new UniqueShortener config
-primdb = redis.createClient()
-primdb.select(5)
+redisdb = redis.createClient()
+redisdb.select(5)
 
-secdb = redis.createClient()
-secdb.select(6)
+MongoClient.connect 'mongodb://localhost:27017/unique-shortener-test', (err, db) ->
+  shortener.init db, redisdb
 
-shortener.init primdb, secdb
-
-shortener.shorten 'http://catforce.de', (err, result) ->
-  console.log JSON.stringify result
-
-
+  shortener.shorten 'http://catforce.de', (err, result) ->
+    console.log JSON.stringify result

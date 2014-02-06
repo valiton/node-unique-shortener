@@ -25,16 +25,16 @@ counterKey: the name of the key in redis database where the counter should be st
 
 ### Methods
 
-#### init(primaryRedisClient, secondaryRedisClient)
-The shortener uses to redis databases: first one to store key-to-url relationship and the second database to the reverse one (url-to-key) to find already shortened urls.
+#### init(mongodb, redisClient)
+The shortener uses mongodb for primary data store and redis for caching. The init-Method requires a mongodb client connection and a standard redis client.
 
 Usage:
 
-	primdb = redis.createClient()
-	primdb.select(5)
-	secdb = redis.createClient()
-	secdb.select(6)
-	shortener.init primdb, secdb
+	MongoClient = require('mongodb').MongoClient
+	MongoClient.connect 'mongodb://localhost:27017/unique-shortener-test', (err, mdb) ->
+		redisdb = redis.createClient()
+		redisdb.select(6)
+		shortener.init mdb, redisdb
  
 
 ##### shorten(url, callback)
