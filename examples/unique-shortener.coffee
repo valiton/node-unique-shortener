@@ -11,10 +11,15 @@ config =
 
 shortener = new UniqueShortener config
 redisdb = redis.createClient()
-redisdb.select(5)
+redisdb.select(6)
 
 MongoClient.connect 'mongodb://localhost:27017/unique-shortener-test', (err, db) ->
-  shortener.init db, redisdb
 
-  shortener.shorten 'http://catforce.de', (err, result) ->
+  shortener.init db, redisdb
+  console.log "run shorten"
+  shortener.shorten 'http://catforce2.de', (err, result) ->
     console.log JSON.stringify result
+
+
+  # shortener.resolve '1', (err, url) ->
+  #   console.log url

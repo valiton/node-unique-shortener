@@ -24,7 +24,7 @@ describe 'UniqueShortener', ->
       redisMock = new RedisMock
       shortener.init mongoMock, redisMock
       shortener.shorten 'http://valiton.com', (err, result) ->
-        expect(result.key).toEqual '1'
+        expect(result.key).toEqual 'gChNU6Pd4cG'
 
 
     it 'should return same key for already shorted url', ->
@@ -54,27 +54,7 @@ describe 'UniqueShortener', ->
       shortener.init mongoMock, redisMock
       shortener.shorten 'alsökdfasölkdjf', (err, result) ->
         expect(err).toBeNull()
-        expect(result.key).toEqual '1'
-
-
-    it 'should increment counter on shortening', (done) ->
-      shortener = new UniqueShortener counterKey: "testcounter"
-      mongoMock = new MongoMock
-      redisMock = new RedisMock
-      shortener.init mongoMock, redisMock
-      shortener.shorten 'http://www.valiton.com', (err, result) ->
-        shortener.shorten 'http://www.valiton2.com', (err, result) ->
-          shortener.shorten 'http://www.valiton3.com', (err, result) ->
-            shortener.shorten 'http://www.valiton4.com', (err, result) ->
-              shortener.shorten 'http://www.valiton5.com', (err, result) ->
-                shortener.shorten 'http://www.valiton6.com', (err, result) ->
-                  shortener.shorten 'http://www.valiton7.com', (err, result) ->
-                    shortener.shorten 'http://www.valiton8.com', (err, result) ->
-                      shortener.shorten 'http://www.valiton9.com', (err, result) ->
-                        shortener.shorten 'http://www.valiton10.com', (err, result) ->
-                          shortener.shorten 'http://www.valiton10.com', (err, result) ->
-                            expect(mongoMock.collection('counter').counter).toEqual 10
-                            done()
+        expect(result.key).toEqual 'gJxWoGCz16k'
 
 
     it 'should shorten 100 urls and when resolve them all', (done) ->

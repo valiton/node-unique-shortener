@@ -1,5 +1,6 @@
-_       = require 'lodash'
-base62  = require 'base62'
+_         = require 'lodash'
+base62    = require 'base62'
+cityhash  = require 'cityhash'
 
 module.exports = class UniqueShortener
 
@@ -29,7 +30,6 @@ module.exports = class UniqueShortener
    * @returns {this} the current instance for chaining
   ###
   init: (@mongo, @redis) ->
-    # TODO insure counter
 
 
 
@@ -47,11 +47,7 @@ module.exports = class UniqueShortener
           key: record.key
           createdNew: no
 
-      # Save new url
-      @_incCounter (err, counter) =>
-        return cb(err) if err?
-
-        key = base62.encode counter
+      @_generateNewKey url, 0, (key) =>
         @_insert
           key: key
           url: url
@@ -91,33 +87,13 @@ module.exports = class UniqueShortener
       cb err, result
 
 
-  _incCounter: (cb) ->
-    @mongo.collection('counter').update
-      counter: true
-    ,
-      '$inc':
-        value: 1
-    , (err, count) =>
-      return cb(err) if err?
-      if count is 0
-        # no counter record insert
-        # create one and then increment it
-        @mongo.collection('counter').insert
-          counter: true
-          value: 0
-        , (err, record) =>
-          return cb(err) if err?
-          # @_incCounter cb
+  _generateNewKey: (url, add, cb) ->
+    hash = cityhash.hash64(url).value
+    key = base62.encode hash
+
+    @resolve key, (err) => # check if the key alredy exists
+      if not err?
+        @_generateNewKey url, Math.floor(Math.random() * 1000), cb
       else
-        @mongo.collection('counter').findOne
-          counter: true
-        , {}, (err, record) ->
-          if err? or not record?
-            return cb err, record
-          return cb null, record.value
-        
-
-
-
-
+        cb key
 
