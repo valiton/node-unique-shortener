@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="UniqueShortener.init" errors="0" tests="1" failures="0" time="0.084" timestamp="2014-02-20T11:07:09">
+  <testcase classname="UniqueShortener.init" name="should initialize the config" time="0.083"></testcase>
+</testsuite>

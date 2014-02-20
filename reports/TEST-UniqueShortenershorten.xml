@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="UniqueShortener.shorten" errors="0" tests="5" failures="0" time="0.518" timestamp="2014-02-20T11:07:09">
+  <testcase classname="UniqueShortener.shorten" name="should return short key" time="0.004"></testcase>
+  <testcase classname="UniqueShortener.shorten" name="should return same key for already shorted url" time="0"></testcase>
+  <testcase classname="UniqueShortener.shorten" name="should decline invalid url" time="0.001"></testcase>
+  <testcase classname="UniqueShortener.shorten" name="should except invalid url on no validation" time="0"></testcase>
+  <testcase classname="UniqueShortener.shorten" name="should shorten 100 urls and when resolve them all" time="0.512"></testcase>
+</testsuite>

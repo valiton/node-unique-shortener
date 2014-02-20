@@ -35,6 +35,9 @@ class MongoCollection
     @counter += 1
     cb()
 
+  ensureIndex : (fields) ->
+   
+
 
 
 module.exports = class MongoMock

@@ -8,7 +8,7 @@
     "url": "git@github.com:valiton/node-unique-shortener.git"
   },
   "bugs": {
-    "url": "https://jira.novalocal/"
+    "url": "https://github.com/valiton/node-unique-shortener/issues"
   },
   "main": "lib/unique-shortener.js",
   "engines": {

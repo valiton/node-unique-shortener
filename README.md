@@ -73,7 +73,7 @@ Returns *NotFound* error if the key wasn't found
 
 ###### Clone application
 
-    $ git clone git@gitlab-openvpn:bigdata/unique-shortener.git
+    $ git clone https://github.com/valiton/node-unique-shortener.git
 
 
 ###### Install all modules
@@ -88,7 +88,7 @@ runs **grunt prod** task in background
 
 ## Release History
 
-### 0.1.0
+### 0.2.0
 
 * Initial version
 
