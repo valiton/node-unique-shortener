@@ -3,6 +3,8 @@
 .project
 .idea
 .lock
+/reports
+/coverage
 node_modules
 npm-debug.log
 log

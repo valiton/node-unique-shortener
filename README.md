@@ -4,7 +4,7 @@ A redis-backed URL-shortener which only generates 1 short-url per url
 
 ## Installation
 
-    $ npm install git@github.com:valiton/node-unique-shortener.git --save
+    $ npm install unique-shortener --save
 
 ## Usage
 	config =
@@ -73,7 +73,7 @@ Returns *NotFound* error if the key wasn't found
 
 ###### Clone application
 
-    $ git clone git@gitlab-openvpn:bigdata/unique-shortener.git
+    $ git clone https://github.com/valiton/node-unique-shortener.git
 
 
 ###### Install all modules
@@ -88,6 +88,18 @@ runs **grunt prod** task in background
 
 ## Release History
 
+### 0.4.0
+
+* Added index to MongoDb
+
+### 0.3.0
+
+* rebuild shortening with hashing
+
+### 0.2.0
+
+* created version with mongo as primary storage and redis as mongo cache
+
 ### 0.1.0
 
 * Initial version
@@ -95,3 +107,8 @@ runs **grunt prod** task in background
 ## Authors
 
 * Gleb Kotov
+* Alexander Stautner
+
+## License
+Copyright (c) 2013 Valiton GmbH
+Licensed under the MIT license.

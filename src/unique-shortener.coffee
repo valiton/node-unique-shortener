@@ -30,6 +30,8 @@ module.exports = class UniqueShortener
    * @returns {this} the current instance for chaining
   ###
   init: (@mongo, @redis) ->
+    @mongo.collection('urls').ensureIndex "key" : 1, {}, (err, result) ->
+      console.error err if err?
 
 
 
