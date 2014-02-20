@@ -35,7 +35,7 @@ class MongoCollection
     @counter += 1
     cb()
 
-  ensureIndex : (fields) ->
+  ensureIndex : (fields, params, cb) ->
    
 
 

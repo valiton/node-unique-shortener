@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite name="UniqueShortener.resolve" errors="0" tests="1" failures="0" time="0.002" timestamp="2014-02-20T11:07:10">
+<testsuite name="UniqueShortener.resolve" errors="0" tests="1" failures="0" time="0.002" timestamp="2014-02-20T16:18:05">
   <testcase classname="UniqueShortener.resolve" name="should resolve the shorted url" time="0.002"></testcase>
 </testsuite>
