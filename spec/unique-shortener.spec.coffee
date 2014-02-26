@@ -11,12 +11,54 @@ describe 'UniqueShortener', ->
     it 'should initialize the config', ->
       config =
         validation: no
-        counterKey: 'test-counter'
       shortener = new UniqueShortener config
       expect(shortener.config.validation).toBeFalsy()
-      expect(shortener.config.counterKey).toEqual('test-counter')
+
+    it "should create collection urls ", ->
+      shortener = new UniqueShortener
+      mongoMock = new MongoMock
+      redisMock = new RedisMock
+
+      mongoClientcollectionSpy = spyOn(mongoMock, 'collection').andCallThrough()
+
+      shortener.init mongoMock, redisMock
+      expect(mongoClientcollectionSpy).toHaveBeenCalledWith("urls");
+
+    it "should ensure indexes on collection urls without index ", ->
+      shortener = new UniqueShortener
+      mongoMock = new MongoMock
+      redisMock = new RedisMock
+
+      MongoCollection = 
+        ensureIndex : (fields, params, cb) ->
+          cb()
 
 
+      mongoCollectionMockensureIndexSpy = spyOn(MongoCollection, 'ensureIndex').andCallThrough()
+      mongoClientcollectionSpy = spyOn(mongoMock, 'collection').andReturn(MongoCollection)
+
+      shortener.init mongoMock, redisMock
+      expect(mongoClientcollectionSpy).toHaveBeenCalledWith("urls");
+
+      expect(mongoCollectionMockensureIndexSpy.callCount).toEqual 2
+
+      expect(mongoCollectionMockensureIndexSpy.calls[0].args[0]).toEqual({key : 1});
+      expect(mongoCollectionMockensureIndexSpy.calls[0].args[1]).toEqual({});
+
+      expect(mongoCollectionMockensureIndexSpy.calls[1].args[0]).toEqual({url : 1});
+      expect(mongoCollectionMockensureIndexSpy.calls[1].args[1]).toEqual({});
+
+    it "should call callback ", (done)->
+      shortener = new UniqueShortener
+      mongoMock = new MongoMock
+      redisMock = new RedisMock
+
+     
+      shortener.init mongoMock, redisMock, (err)->
+        expect(err).toBeNull()
+        done()
+      
+      
   describe 'shorten', ->
     it 'should return short key', ->
       shortener = new UniqueShortener
@@ -24,6 +66,9 @@ describe 'UniqueShortener', ->
       redisMock = new RedisMock
       shortener.init mongoMock, redisMock
       shortener.shorten 'http://valiton.com', (err, result) ->
+        console.log "err" ,err
+        console.log "result" ,result
+
         expect(result.key).toEqual 'gChNU6Pd4cG'
 
 
@@ -94,5 +139,17 @@ describe 'UniqueShortener', ->
         shortener.resolve result.key, (err, url) ->
           expect(url).toEqual 'http://valiton.com'
 
+
+  describe "_createHash", ->
+    it "should return a hash for a given url", ->
+      shortener = new UniqueShortener
+      urlHash = shortener._createHash("http://valiton.com")  
+      expect(urlHash).toEqual "gChNU6Pd4cG"
+    
+    it "should return a hash with empty string", ->
+      shortener = new UniqueShortener
+      urlHash = shortener._createHash("")  
+      expect(urlHash).toEqual "diqnhBzWHmy"
+        
 
 
