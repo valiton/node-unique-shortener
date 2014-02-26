@@ -1,23 +1,24 @@
-# run this from your project-directory like this:
-# $ coffee examples/unique-shortener.coffee
+# $ coffee unique-shortener.coffee
 
-redis             = require 'redis'
-UniqueShortener   = require "#{process.cwd()}/lib/unique-shortener"
+redis           = require 'redis'
+MongoClient     = require('mongodb').MongoClient
+UniqueShortener = require "../lib/unique-shortener"
 
 config =
   validation: no
-  counterKey: 'unique-shortener-counter'
 
 shortener = new UniqueShortener config
-primdb = redis.createClient()
-primdb.select(0)
 
-secdb = redis.createClient()
-secdb.select(1)
+redis = redis.createClient()
+redis.select(0)
 
-shortener.init primdb, secdb
+MongoClient.connect "mongodb://127.0.0.1:27017/unique-shortener", (err, mdb) =>
+  if err?
+    console.error err
+  else
+    shortener.init mdb, redis
 
-shortener.shorten 'http://catforce.de', (err, result) ->
-  console.log JSON.stringify result
+    shortener.shorten 'http://www.valiton.com', (err, result) ->
+      console.log JSON.stringify result
 
 

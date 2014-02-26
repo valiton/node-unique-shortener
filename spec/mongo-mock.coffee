@@ -36,6 +36,7 @@ class MongoCollection
     cb()
 
   ensureIndex : (fields, params, cb) ->
+    cb?()
    
 
 

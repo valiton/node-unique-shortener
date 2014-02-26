@@ -19,7 +19,6 @@ module.exports = class UniqueShortener
   constructor: (@config) ->
     @config = _.merge
       validation: yes
-      counterKey: 'unique-shortener-counter'
     , @config
 
 
@@ -29,9 +28,16 @@ module.exports = class UniqueShortener
    * @function global.Test_lib.prototype.init
    * @returns {this} the current instance for chaining
   ###
-  init: (@mongo, @redis) ->
-    @mongo.collection('urls').ensureIndex "key" : 1, {}, (err, result) ->
-      console.error err if err?
+  init: (@mongo, @redis, cb) ->
+    @mongo.collection('urls').ensureIndex {key: 1}, {}, (err, result) =>
+      if err?
+        cb? err
+      else
+        @mongo.collection('urls').ensureIndex {url: 1}, {}, (err, result) =>
+          if err?
+            cb? err
+          else
+            cb? null
 
 
 
@@ -48,8 +54,8 @@ module.exports = class UniqueShortener
         return cb null,
           key: record.key
           createdNew: no
-
-      @_generateNewKey url, 0, (key) =>
+      else
+        key = @_createHash(url)
         @_insert
           key: key
           url: url
@@ -72,30 +78,26 @@ module.exports = class UniqueShortener
 
   _findOne: (q, cb) ->
     @redis.get JSON.stringify(q), (err, result) =>
+      
       if not err? and result?
         return cb null, JSON.parse(result)
 
       @mongo.collection('urls').findOne q, {}, (err, result) =>
+
         if err? or not result?
           return cb err, result
         else
           # Cache it
           @redis.set JSON.stringify(q), JSON.stringify(result), (err) ->
-            return cb null, result
+            return cb(err) if err?
+            cb(null, result)
 
 
   _insert: (q, cb) ->
     @mongo.collection('urls').insert q, (err, result) ->
       cb err, result
 
-
-  _generateNewKey: (url, add, cb) ->
+  _createHash: (url)->
     hash = cityhash.hash64(url).value
-    key = base62.encode hash
-
-    @resolve key, (err) => # check if the key alredy exists
-      if not err?
-        @_generateNewKey url, Math.floor(Math.random() * 1000), cb
-      else
-        cb key
-
+    encodedHash = base62.encode hash
+    encodedHash

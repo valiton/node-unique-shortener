@@ -62,6 +62,11 @@ module.exports = (grunt) ->
           prefix: ''
         files: [expand: true, cwd: './spec-lib', src: ['*.spec.js'], dest: './spec-lib', ext: '.spec.js']
 
+    watch: 
+      scripts: 
+        files: ['src/**/*.coffee','spec/**/*.coffee']
+        tasks: ['prod']
+        
   grunt.loadNpmTasks 'grunt-coffeelint'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
@@ -69,5 +74,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-istanbul'
   grunt.loadNpmTasks 'grunt-replace'
   grunt.loadNpmTasks 'grunt-jsdoc'
+  grunt.loadNpmTasks 'grunt-contrib-watch'
 
   grunt.registerTask 'prod', ['clean:before','coffee', 'instrument', 'replace:coverage', 'jasmine_node', 'storeCoverage', 'makeReport', 'clean:spec', 'jsdoc']
+  grunt.registerTask 'dev', ['prod','watch']
