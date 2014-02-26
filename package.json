@@ -1,7 +1,7 @@
 {
   "name": "unique-shortener",
   "description": "A redis-backed URL-shortener which only generates 1 short-url per url",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": "Valiton GmbH <bigdata@valiton.com> (http://www.valiton.com)",
   "repository": {
     "type": "git",
