@@ -15,23 +15,30 @@ The Redis is used for caching.
     $ npm install unique-shortener --save
 
 ## Usage
-  config =
-    validation: no
 
-  shortener = new UniqueShortener config
+```javascript
+var MongoClient, UniqueShortener, config, redis, shortener,
+redis = require('redis');
+MongoClient = require('mongodb').MongoClient;
+UniqueShortener = require("unique-shortener");
 
-  redis = redis.createClient()
-  redis.select(0)
-
-  MongoClient.connect "mongodb://127.0.0.1:27017/unique-shortener", (err, mdb) =>
-    if err?
-      console.error err
-    else
-      shortener.init mdb, redis
-
-      shortener.shorten 'http://www.valiton.com', (err, result) ->
-        console.log JSON.stringify result
-
+config = {
+  validation: false
+};
+shortener = new UniqueShortener(config);
+redis = redis.createClient();
+redis.select(0);
+MongoClient.connect("mongodb://127.0.0.1:27017/unique-shortener", function(err, mdb) {
+  if (err != null) {
+    console.error(err);
+  } else {
+    shortener.init(mdb, redis);
+    shortener.shorten('http://www.valiton.com', function(err, result) {
+      console.log(JSON.stringify(result));
+    });
+  }
+});
+```
 
 ### Config
 
@@ -39,10 +46,9 @@ validation: defines if the input string should be validated as a valid url
 
 ### Methods
 
-#### init(mongodb, redisClient)
+##### init(mongodb, redisClient, callback)
 The shortener uses mongodb for primary data store and redis for caching. The init-Method requires a mongodb client connection and a standard redis client.
-
-Usage:
+the callback is optional
 
 
 ##### shorten(url, callback)
@@ -51,17 +57,17 @@ Returns a result object with short-key and flag if the url was already existed o
 
 Example:
 
-  shortener.shorten url, (err, result) ->
-    console.log(result.key)
-    console.log(result.createdNew)
+    shortener.shorten url, (err, result) ->
+      console.log(result.key)
+      console.log(result.createdNew)
 
   
 Result object:
 
-  {
-    key:"oisdjf9",
-    "createdNew": true
-  }
+    {
+      key:"oisdjf9",
+      "createdNew": true
+    }
 
 
 ##### resolve(key, callback)
@@ -70,9 +76,9 @@ Returns the resolved url if it exists.
 
 Example:
 
-  shortener.resolve key, (err, url) ->
-    console.log(url)
-    
+    shortener.resolve key, (err, url) ->
+      console.log(url)
+      
 Returns *NotFound* error if the key wasn't found
 
 
@@ -100,7 +106,8 @@ runs **grunt prod** task in background
 
 * Bugfixes
 * update Documentation
-* add grunt dev task for outreload of tests
+* add grunt dev task for auotreload of tests
+* add travis
 
 
 ### 0.4.0
