@@ -6,6 +6,10 @@ In a cluster setup it can be used with a central mongodb or mongodb replicatset 
 The mongoDB is used as permanent datastore.
 The Redis is used for caching.
 
+
+![random-string](https://api.travis-ci.org/valiton/node-unique-shortener.png "random-string")
+
+
 ## Installation
 
     $ npm install unique-shortener --save
