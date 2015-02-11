@@ -61,7 +61,7 @@ Example:
       console.log(result.key)
       console.log(result.createdNew)
 
-  
+
 Result object:
 
     {
@@ -78,7 +78,7 @@ Example:
 
     shortener.resolve key, (err, url) ->
       console.log(url)
-      
+
 Returns *NotFound* error if the key wasn't found
 
 
@@ -94,13 +94,17 @@ Returns *NotFound* error if the key wasn't found
 
     $ npm install
 
-###### Run jasmine tests 
+###### Run jasmine tests
 
 runs **grunt prod** task in background
 
     $ npm test
 
 ## Release History
+
+### 0.4.2
+
+* use farmhash instead of cityhash (cityhash will not work on node@0.12.x)
 
 ### 0.4.1
 
