@@ -1,6 +1,6 @@
 _         = require 'lodash'
 base62    = require 'base62'
-cityhash  = require 'cityhash'
+farmhash  = require 'farmhash'
 
 module.exports = class UniqueShortener
 
@@ -78,7 +78,7 @@ module.exports = class UniqueShortener
 
   _findOne: (q, cb) ->
     @redis.get JSON.stringify(q), (err, result) =>
-      
+
       if not err? and result?
         return cb null, JSON.parse(result)
 
@@ -98,6 +98,6 @@ module.exports = class UniqueShortener
       cb err, result
 
   _createHash: (url)->
-    hash = cityhash.hash64(url).value
+    hash = farmhash.hash64(new Buffer(url)).value
     encodedHash = base62.encode hash
     encodedHash
